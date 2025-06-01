@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pengumuman Kelulusan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #d0f0fd, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .logo {
+      width: 100px;
+      margin-bottom: 15px;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #0077b6;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #0077b6;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .success { color: green; }
+    .fail { color: red; }
+    .notfound { color: orange; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="LOGO SEKOLAH.jpg" alt="Logo Sekolah" class="logo">
+    <h1>PENGUMUMAN KELULUSAN<br>KELAS VI SDN 19 PEMECUTAN<br>TAHUN AJARAN 2024/2025</h1>
+    <form id="formKelulusan">
+      <input type="text" id="nisn" placeholder="Masukkan NISN" required>
+      <input type="text" id="nama" placeholder="Masukkan Nama Lengkap" required>
+      <button type="submit">Cek Kelulusan</button>
+    </form>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const dataSiswa = [
+      { nisn: "0134198172", nama: "anak agung istri devina maha dewi", status: "lulus" },
+      { nisn: "0132837217", nama: "anak agung ngurah adi dananjaya", status: "lulus" },
+      { nisn: "0139759683", nama: "christopher tito alvaro mastail", status: "lulus" },
+      { nisn: "0138010868", nama: "dewa gede pradnyana", status: "lulus" },
+      { nisn: "0127377656", nama: "florita wisnu candrawati", status: "lulus" },
+      { nisn: "0133921318", nama: "gede rava danaditha", status: "lulus" },
+      { nisn: "0129836437", nama: "gusti ayu agung cahayacinta", status: "lulus" },
+      { nisn: "0121286564", nama: "gusti ayu agung satyakasih", status: "lulus" },
+      { nisn: "0126766757", nama: "i gusti bagus danan daniswara", status: "lulus" },
+      { nisn: "0132949053", nama: "i gusti made mikha viswathama sudhana", status: "lulus" },
+      { nisn: "0139483840", nama: "i made gede bagus nararya weda", status: "lulus" },
+      { nisn: "0139984251", nama: "i putu nanendra putra pratama", status: "lulus" },
+      { nisn: "0125750336", nama: "ida ayu anindita kirana mahasuari", status: "lulus" },
+      { nisn: "0133800721", nama: "ida ayu made sona pratiwi", status: "lulus" },
+      { nisn: "0138610308", nama: "irfan khairi darmawan", status: "lulus" },
+      { nisn: "0132411891", nama: "kadek anindya laksmi devi tangkas", status: "lulus" },
+      { nisn: "0137220751", nama: "kadek ishana satriayu prabadewi", status: "lulus" },
+      { nisn: "0124984968", nama: "kadek surya dwipayana", status: "lulus" },
+      { nisn: "0126465596", nama: "luh putu padma sasmitha pangestu", status: "lulus" },
+      { nisn: "0125762521", nama: "muhammad kumail", status: "lulus" },
+      { nisn: "0125913372", nama: "ni luh putu vaisya kencana nugraha", status: "lulus" },
+      { nisn: "0133161985", nama: "prabu lananggalih putra helianak", status: "lulus" },
+      { nisn: "0132662810", nama: "putu aliya marsya atmaja", status: "lulus" },
+      { nisn: "0132213823", nama: "putu aristya prameswari bidrawan", status: "lulus" },
+      { nisn: "0135608113", nama: "putu daniel deera jaya", status: "lulus" },
+      { nisn: "0139941938", nama: "putu dhaneswara prama santastra", status: "lulus" },
+      { nisn: "0124695682", nama: "yutaka joy ratu", status: "lulus" },
+      { nisn: "0118610624", nama: "dewa putu hendra kurniawan", status: "lulus" },
+      { nisn: "0123754405", nama: "fatimah qumaira imaniar", status: "lulus" },
+      { nisn: "0139386806", nama: "gabriell stevano pareira", status: "lulus" },
+      { nisn: "0124092757", nama: "i gede abhi bayu paramacetta", status: "lulus" },
+      { nisn: "0121350283", nama: "i gusti agung putri gea maheni", status: "lulus" },
+      { nisn: "0134578852", nama: "i gusti bagus agung andra sadewa", status: "lulus" },
+      { nisn: "0137196548", nama: "i gusti bagus agung natha narendra", status: "lulus" },
+      { nisn: "0123591266", nama: "i komang wahyu adi putra", status: "lulus" },
+      { nisn: "0124963609", nama: "i made revano putrayana dwika", status: "lulus" },
+      { nisn: "0139418462", nama: "i putu suwita yasa ardinanta", status: "lulus" },
+      { nisn: "0138359450", nama: "ida ayu nindya rama swari", status: "lulus" },
+      { nisn: "0133827915", nama: "kadek ary darmayasa", status: "lulus" },
+      { nisn: "0132283393", nama: "kadek chio purnama putra", status: "lulus" },
+      { nisn: "0126277294", nama: "kadek felisia davina nadhiandra", status: "lulus" },
+      { nisn: "0123225660", nama: "komang adiyaksa wiguna", status: "lulus" },
+      { nisn: "0122742530", nama: "koming prastya darma putra", status: "lulus" },
+      { nisn: "3138011474", nama: "muhammad raffi saputra", status: "lulus" },
+      { nisn: "0125581816", nama: "ni luh arnya taffani indraswari", status: "lulus" },
+      { nisn: "0122339211", nama: "ni luh putu chika pratiwi", status: "lulus" },
+      { nisn: "0131976962", nama: "ni putu karina putri", status: "lulus" },
+      { nisn: "0137351547", nama: "ni putu kirana ananda putri", status: "lulus" },
+      { nisn: "3128056786", nama: "ni putu ranita fortuna", status: "lulus" },
+      { nisn: "0122514095", nama: "ni wayan trinadhi asih", status: "lulus" },
+      { nisn: "0121059392", nama: "putu indri selena elvalyna", status: "lulus" },
+      { nisn: "3138557725", nama: "raehan pratama", status: "lulus" },
+      { nisn: "0122527734", nama: "torang aaron alexander nggebu", status: "lulus" },
+      { nisn: "0123884744", nama: "akhmad alfin hidayatulhaq", status: "lulus" },
+      { nisn: "0131072893", nama: "anak agung ketut indah lastari putri", status: "lulus" },
+      { nisn: "0124935521", nama: "bayu firmansa", status: "lulus" },
+      { nisn: "0135678660", nama: "dewa ayu meisya dinda pradnya dewi", status: "lulus" },
+      { nisn: "0134064358", nama: "firman bagus maulana", status: "lulus" },
+      { nisn: "0123259462", nama: "gusti nyoman amara oktaviari", status: "lulus" },
+      { nisn: "0132319973", nama: "i gede bagus saputra", status: "lulus" },
+      { nisn: "0135584383", nama: "i gede juna prasetya putra", status: "lulus" },
+      { nisn: "0126868480", nama: "i gede putra artha winata", status: "lulus" },
+      { nisn: "0134051897", nama: "i putu sandhi widhana putra", status: "lulus" },
+      { nisn: "0122261376", nama: "ida ayu kadek diah pramesty", status: "lulus" },
+      { nisn: "0127464913", nama: "ida ayu putu intan permata sari", status: "lulus" },
+      { nisn: "0131927676", nama: "kadek aditya prayoga", status: "lulus" },
+      { nisn: "0139355176", nama: "kadek selvielia darmayoni", status: "lulus" },
+      { nisn: "0131537713", nama: "komang narendra aria juanda", status: "lulus" },
+      { nisn: "0122329772", nama: "luh made ishika sarvaiswarya", status: "lulus" },
+      { nisn: "0121843314", nama: "made bagaskara arga permana winaya", status: "lulus" },
+      { nisn: "3128312111", nama: "michaela fitri mackinnley", status: "lulus" },
+      { nisn: "0136042096", nama: "ni kadek sukma ayu cahyani putri", status: "lulus" },
+      { nisn: "0126002720", nama: "ni komang yunita savitri dewi", status: "lulus" },
+      { nisn: "0123906312", nama: "ni koming kirana alya nata diputri", status: "lulus" },
+      { nisn: "0121930872", nama: "ni luh putu hana aurora", status: "lulus" },
+      { nisn: "0129248339", nama: "pande dharma sarwatha mahardika", status: "lulus" },
+      { nisn: "0135968868", nama: "putu juna raditha yana", status: "lulus" },
+      { nisn: "0131159425", nama: "raphael johannes jayapranatha", status: "lulus" },
+      { nisn: "0127959410", nama: "wikananda dharma putra", status: "lulus" },
+      { nisn: "0135757831", nama: "anak agung bagus wikan astina putra", status: "lulus" },
+      { nisn: "0139644051", nama: "dewa made kevin putra chandrawirya", status: "lulus" },
+      { nisn: "0128092325", nama: "gusti ayu surya dharma yanti", status: "lulus" },
+      { nisn: "3126642142", nama: "humairoh amani udzma", status: "lulus" },
+      { nisn: "0126908919", nama: "i gede satya krisnanda", status: "lulus" },
+      { nisn: "0127993224", nama: "i kadek esrand laksmana devansa", status: "lulus" },
+      { nisn: "0122241810", nama: "i made bagus dwi resa adiputra", status: "lulus" },
+      { nisn: "0135168253", nama: "i putu arya weda suastika", status: "lulus" },
+      { nisn: "0127921581", nama: "i putu indra guna", status: "lulus" },
+      { nisn: "0124671074", nama: "ida ayu arshinta devi cahyani", status: "lulus" },
+      { nisn: "0123714836", nama: "ida ayu eka bawanti pidada", status: "lulus" },
+      { nisn: "3134565144", nama: "jihan thalita ulfa", status: "lulus" },
+      { nisn: "0127630952", nama: "joshua wira putra", status: "lulus" },
+      { nisn: "0124895522", nama: "komang juna adyatma wijaya", status: "lulus" },
+      { nisn: "0123842571", nama: "komang ratih marchianingrum", status: "lulus" },
+      { nisn: "0134066225", nama: "komang vidya lakshmi", status: "lulus" },
+      { nisn: "0123473933", nama: "muhammad abdillah alfiansyah", status: "lulus" },
+      { nisn: "0125272091", nama: "ni komang aiko andara kirana", status: "lulus" },
+      { nisn: "0122571778", nama: "ni komang ayu almira mutiara putri", status: "lulus" },
+      { nisn: "0136868684", nama: "ni komang jakira miranda dewi", status: "lulus" },
+      { nisn: "0128698840", nama: "ni luh putu eka junistyawati", status: "lulus" },
+      { nisn: "0129125573", nama: "ni made nilawati pertiwi", status: "lulus" },
+      { nisn: "0125778545", nama: "ni made stephanie joy tunas", status: "lulus" },
+      { nisn: "0133961079", nama: "ni nyoman sulasih", status: "lulus" },
+      { nisn: "0133726695", nama: "nyoman adnya paramita sunu", status: "lulus" },
+      { nisn: "0113407922", nama: "rizky azqhil zacky", status: "lulus" },
+      { nisn: "0126578645", nama: "shaira ayunda bella", status: "lulus" }
+    ];
+
+    document.getElementById("formKelulusan").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const nisn = document.getElementById("nisn").value.trim();
+      const nama = document.getElementById("nama").value.trim().toLowerCase();
+      const result = document.getElementById("result");
+
+      const siswa = dataSiswa.find(s => s.nisn === nisn && s.nama === nama);
+      if (siswa) {
+        const message = `
+          <div>${siswa.nama.toUpperCase()}</div>
+          <div class="${siswa.status === 'lulus' ? 'success' : 'fail'}">
+            ${siswa.status === 'lulus' ? '🎉 Selamat, Anda dinyatakan LULUS' : 'Mohon maaf, Anda BELUM LULUS'}
+          </div>`;
+        result.innerHTML = message;
+      } else {
+        result.innerHTML = "<div class='notfound'>Data tidak ditemukan. Periksa kembali NISN dan nama Anda.</div>";
+      }
+    });
+  </script>
+</body>
+</html>
